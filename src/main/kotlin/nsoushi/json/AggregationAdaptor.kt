@@ -26,6 +26,8 @@ class AggregationAdapter : JsonAdapter<Aggregations>() {
         if (writer == null || value == null)
             throw JsonDataException("json parse error")
 
+        writer.setIndent("    ")
+
         writer.beginObject()
         writer.name(value.name)
         writeAggregations(writer, value)
@@ -43,7 +45,7 @@ class AggregationAdapter : JsonAdapter<Aggregations>() {
             writer.name("aggregations")
             toJson(writer, value.aggregations)
         } else {
-            writer.name("aggregations")?.nullValue()
+            writer.name("aggregations").nullValue()
         }
 
         writer.endObject()
@@ -53,23 +55,21 @@ class AggregationAdapter : JsonAdapter<Aggregations>() {
         writer.beginObject()
         writer.name("field").value(value.terms.field)
         writer.name("size").value(value.terms.size)
-        writer.endObject();
+        writer.endObject()
     }
 
     @FromJson
     override fun fromJson(reader: JsonReader?): Aggregations? {
 
-        if (reader == null)
-            throw JsonDataException("json parse error")
+        reader ?: throw JsonDataException("json parse error")
 
         var aggregations: Aggregations? = null
 
         reader.beginObject()
         while (reader.hasNext()) {
-            val name = reader.nextName()
-            aggregations = readAggregations(name, reader)
+            aggregations = readAggregations(reader.nextName(), reader)
         }
-        reader.endObject();
+        reader.endObject()
 
         return aggregations
     }
@@ -79,22 +79,21 @@ class AggregationAdapter : JsonAdapter<Aggregations>() {
         var terms: Terms? = null
         var subAaggregations: Aggregations? = null
 
-        reader.beginObject();
+        reader.beginObject()
         while (reader.hasNext()) {
             val nextName = reader.nextName()
-            if (nextName == "terms") {
+            if (nextName == "terms")
                 terms = readTerms(reader)
-            } else if (nextName == "aggregations") {
+            else if (nextName == "aggregations") {
                 if (reader.peek() != JsonReader.Token.NULL) {
                     subAaggregations = fromJson(reader)
                 } else {
                     reader.skipValue()
                 }
-            } else {
+            } else
                 reader.skipValue()
-            }
         }
-        reader.endObject();
+        reader.endObject()
 
         return Aggregations(name, terms as Terms, subAaggregations)
     }
@@ -103,18 +102,18 @@ class AggregationAdapter : JsonAdapter<Aggregations>() {
 
         var field: String? = null
         var size: Long? = null
-        reader.beginObject();
+
+        reader.beginObject()
         while (reader.hasNext()) {
             val name = reader.nextName()
-            if (name == "field") {
+            if (name == "field")
                 field = reader.nextString()
-            } else if (name == "size") {
+            else if (name == "size")
                 size = reader.nextLong()
-            } else {
+            else
                 reader.skipValue()
-            }
         }
-        reader.endObject();
+        reader.endObject()
         return Terms(field as String, size as Long)
     }
 }
