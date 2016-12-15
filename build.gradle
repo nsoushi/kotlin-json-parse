@@ -30,6 +30,7 @@ dependencies {
     compile 'com.beust:klaxon:0.24'
 
     testCompile 'junit:junit:4.11'
+    testCompile 'io.kotlintest:kotlintest:1.3.5'
 }
 
 sourceSets {
