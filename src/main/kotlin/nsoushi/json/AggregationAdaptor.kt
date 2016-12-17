@@ -11,7 +11,7 @@ class AggregationAdapter : JsonAdapter<Aggregations>() {
 
     companion object {
         val FACTORY: Factory = object : Factory {
-            override fun create(type: Type, annotations: Set<out Annotation>, moshi: Moshi): JsonAdapter<*>? {
+            override fun create(type: Type, annotations: Set<Annotation>, moshi: Moshi): JsonAdapter<*>? {
                 if (type === Aggregations::class.java) {
                     return AggregationAdapter()
                 }

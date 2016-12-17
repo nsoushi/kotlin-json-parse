@@ -29,15 +29,15 @@ class AggregationModelTest : ShouldSpec() {
 
                 actual.name shouldBe "aggs_post_id"
                 actual.terms.field shouldBe "post_id"
-                actual.terms.size shouldBe 0L
+                actual.terms.size shouldBe 1000L
 
                 actual.aggregations?.name shouldBe "aggs_category_id"
                 actual.aggregations?.terms?.field shouldBe "category_id"
-                actual.aggregations?.terms?.size shouldBe 0L
+                actual.aggregations?.terms?.size shouldBe 20L
 
                 actual.aggregations?.aggregations?.name shouldBe "aggs_user_id"
                 actual.aggregations?.aggregations?.terms?.field shouldBe "user_id"
-                actual.aggregations?.aggregations?.terms?.size shouldBe 0L
+                actual.aggregations?.aggregations?.terms?.size shouldBe 2500L
             }
         }
     }
