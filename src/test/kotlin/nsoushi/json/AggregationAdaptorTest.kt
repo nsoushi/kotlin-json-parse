@@ -2,9 +2,6 @@ package nsoushi.json
 
 import com.squareup.moshi.Moshi
 import io.kotlintest.specs.ShouldSpec
-import org.hamcrest.MatcherAssert.*
-import org.hamcrest.core.Is.*
-import org.junit.Test
 
 /**
  *

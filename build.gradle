@@ -3,34 +3,62 @@ version '1.0-SNAPSHOT'
 
 buildscript {
     ext.kotlin_version = '1.0.4'
+    ext.springboot_version = "1.4.2.RELEASE"
+    ext.spring_version = "4.3.4.RELEASE"
 
     repositories {
         jcenter()
+        maven { url "http://repo.spring.io/snapshot" }
+        maven { url "http://repo.spring.io/milestone" }
+        maven { url "http://repository.jetbrains.com/all" }
         mavenCentral()
     }
     dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$springboot_version"
+        classpath "org.springframework:springloaded:1.2.6.RELEASE"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'kotlin'
+apply plugin: "spring-boot"
+apply plugin: "idea"
 
 sourceCompatibility = 1.5
 
+processResources.destinationDir = compileJava.destinationDir
+compileJava.dependsOn processResources
+
+idea {
+    module {
+        inheritOutputDirs = false
+        outputDir = file("$buildDir/classes/main/")
+    }
+}
+
 repositories {
     jcenter()
+    maven { url "http://repo.spring.io/snapshot" }
+    maven { url "http://repo.spring.io/milestone" }
+    maven { url "http://repository.jetbrains.com/all" }
     mavenCentral()
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "org.elasticsearch:elasticsearch:2.4.2"
-    compile 'com.squareup.moshi:moshi:1.3.1'
-    compile 'com.beust:klaxon:0.24'
+    compile "com.squareup.moshi:moshi:1.3.1"
+    compile "org.springframework.boot:spring-boot-starter-web:$springboot_version"
+    compile "org.springframework.boot:spring-boot-actuator:$springboot_version"
+    compile "org.springframework:spring-tx:$spring_version"
 
-    testCompile 'junit:junit:4.11'
-    testCompile 'io.kotlintest:kotlintest:1.3.5'
+    testCompile "org.springframework.boot:spring-boot-starter-test:$springboot_version"
+    testCompile "junit:junit:4.12"
+    testCompile "com.beust:klaxon:0.27"
+    testCompile "io.kotlintest:kotlintest:1.3.5"
+    testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test-junit', version: '1.0.5-3'
+
 }
 
 sourceSets {
