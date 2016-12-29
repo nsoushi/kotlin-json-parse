@@ -56,4 +56,29 @@ open class TestControllerTest : BehaviorSpec() {
             }
         }
     }
+
+    init {
+        val userId: Long = 1
+        given("GET: /test/member/{$userId}") {
+
+            target = TestController()
+            mvc = MockMvcBuilders.standaloneSetup(target).build()
+
+            val response = mvc.perform(MockMvcRequestBuilders.get("/test/member/${userId}"))
+                    .andExpect(MockMvcResultMatchers.status().isOk()).andReturn().response.contentAsString
+
+            `when`("response is ok") {
+
+                val user = Parser().parse(response.byteInputStream()) as JsonObject
+
+                then("@JsonPropertyと@JsonIgnoreが有効であること") {
+                    val gold = user.boolean("isGold")
+                    gold shouldBe true
+
+                    val containsAge = user.containsKey("age")
+                    containsAge shouldBe false
+                }
+            }
+        }
+    }
 }
