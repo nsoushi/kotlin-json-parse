@@ -52,6 +52,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-web:$springboot_version"
     compile "org.springframework.boot:spring-boot-actuator:$springboot_version"
     compile "org.springframework:spring-tx:$spring_version"
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.8.4"
 
     testCompile "org.springframework.boot:spring-boot-starter-test:$springboot_version"
     testCompile "junit:junit:4.12"
